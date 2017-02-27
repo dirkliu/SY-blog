@@ -1,0 +1,36 @@
+<%- include ../common/header %>
+
+<div id="reg">
+    <table width="100%" class="new_table">
+        <tbody>
+            <tr>
+                <td class="name">用户名</td>
+                <td class="text">
+                    <input type="text" id="userName" class="text_input">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">密码</td>
+                <td class="text">
+                    <input type="password" id="passWord" class="text_input">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">确认密码</td>
+                <td class="text">
+                    <input type="password" id="passWord-repeat" class="text_input">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">邮箱</td>
+                <td class="text">
+                    <input type="text" id="email" class="text_input">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="btn"><span class="ok regBtn">注册 »</span></div>
+</div>
+
+<script src="/js/reg.js"></script>
+<%- include ../common/footer %>

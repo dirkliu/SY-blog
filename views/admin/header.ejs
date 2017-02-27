@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>后台管理<%= title %></title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="email=no">
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="full-screen" content="yes">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="/admin/css/admin.css" />
+    <script src="/js/zepto-min.js"></script>
+    <script src="/js/common.js"></script>
+</head>
+<body>
+
+<!-- on-->
+<div class="nav">
+    <div class="mask"></div>
+    <div class="menu-list">
+        <div class="title" style="margin-top: 0; border-top:0">» 系统管理</div>
+        <ul>
+            <li><a href="/admin/comment">评论管理</a></li>
+        </ul>
+
+        <div class="title">» 分类管理</div>
+        <ul>
+            <li><a href="/admin/addType" class="on">添加类别</a></li>
+        </ul>
+
+        <div class="title">» 文章管理</div>
+        <ul>
+            <li><a href="/admin/addArticle">添加文章</a></li>
+            <li><a href="/admin/article">文章列表</a></li>
+        </ul>
+
+        <div class="title">» 用户管理</div>
+        <ul>
+            <li><a href="/admin/addUser">管理用户</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="header">
+    <i class="icon-nav"></i>
+    <div class="title">
+        <h1>MANAGEMENT</h1>
+        <div class="subtitle">来自哥伦比亚的界面演绎者</div>
+    </div>
+    <div class="session-name">
+        <span>[admin]</span>
+        <span>时间[2秒]</span>
+        <a href="/admin/logout" class="a_baise logout"><span>[退出]</span></a>
+        <a href="../" class="a_baise" target="_blank"><span>[网站首页]</span></a>
+    </div>
+</div>
+<div class="container">
+    <div class="main">

@@ -1,0 +1,64 @@
+<%- include header %>
+
+<h2 class="h2_title">添加类别 »</h2>
+<div id="content">
+
+    <table width="100%" class="new_table">
+        <tr>
+            <td class="name">名称</td>
+            <td class="text">
+                <input type="text" id="cateNameId" name="cateName">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">等级</td>
+            <td class="text" >
+                <select id="parentId" name="parent">
+                    <option value="0">顶级分类</option>
+                    <% data.forEach(function( item ) { %>
+                        <option value="<%= item._id %>">
+                            <%= item.cateName %>
+                            <% item.son.forEach(function( sonItem ) { %>
+                                <option value="<%= sonItem._id %>">
+                                    &nbsp;&nbsp;┗ <%= sonItem.cateName %>
+                                </option>
+                            <% }) %>
+                        </option>
+                    <% }) %>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">描述</td>
+            <td class="text" >
+                <input type="text" name="desc" id="descId">
+            </td>
+        </tr>
+    </table>
+
+    <div class="btn">
+        <span id="addCateBtn" class="ok" >确认 »</span>
+    </div>
+
+    <div class="addType">
+        <% data.forEach(function( item ) { %>
+
+            <% if ( item.parentId == '0' ) { %>
+                <h2><%= item.cateName %> »</h2>
+                <ul>
+                    <% item.son.forEach(function( sonItem ) { %>
+                        <li>
+                            <div class="cateTitle"><%= sonItem.cateName %></div>
+                            <span id="<%= sonItem._id %>" data-code="<%= sonItem.cateName %>" class="update">修改</span>
+                            <span id="<%= sonItem._id %>" data-code="<%= sonItem.cateName %>" class="del">删除</span>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } %>
+
+        <% }) %>
+    </div>
+</div>
+
+<script src="/admin/js/addType.js"></script>
+<%- include footer %>

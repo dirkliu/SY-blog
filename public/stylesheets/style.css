@@ -1,0 +1,45 @@
+
+
+/*首页文章*/
+.homeList{ padding: 30px 20px;border-top: 1px solid #e0e0e0; }
+.homeList .title{ text-align: center; line-height: 25px; margin-bottom: 5px;}
+.homeList .title a{ font-size:20px; color: #555; font-family: 'Microsoft Jhenghei', 'Microsoft YaHei'; }
+.homeList .desc{ margin-bottom:30px; color: #999; font-size: 12px; text-align: center;  }
+.homeList .desc span{ display: inline-block; line-height: 20px; }
+.homeList .desc a{ border-bottom: 1px solid #999; }
+.homeList .body{ text-align: justify; }
+.homeList .body p{ margin-bottom:20px; }
+.homeList .body .more{ text-align: center; }
+.homeList .body .more a{
+    display: inline-block; padding: 0 20px; line-height: 30px; font-size: 14px;
+    color: #fff; background: #333; border-radius: 20px;
+}
+.homeList .body .more a:active{ background: #CE5462;}
+
+/*tags*/
+.post-tags{ margin-top: 40px; text-align: center; }
+.post-tags a{ display: inline-block; margin-right: 15px; font-size: 13px; border-bottom: 1px solid #999; padding-top: 10px;}
+.post-tags a:active{ color: #CE5462; border-bottom: 1px solid #CE5462; }
+
+/*上一篇*/
+.post-prev{ margin-top:40px; text-align:center; background: #e0e0e0;  padding:0 30px; }
+.post-prev a{ display: block; padding: 10px 0;}
+
+/*分类*/
+.category{ margin-top: 30px; padding: 0 20px; }
+.category .title{ text-align: center; font-size: 14px; }
+.category .post-tags{}
+.category .post-tags a span{ color: #999; }
+
+/*分类, 标签, 列表*/
+.category-tags-list{ text-align: center; margin-top: 30px; }
+.category-tags-list ul{ margin-top: 20px; }
+.category-tags-list ul li{}
+.category-tags-list ul li a{ display: block; padding: 12px 0;}
+.category-tags-list ul li a:active{ background: #e0e0e0; }
+.category-tags-list .post-tags{ padding: 0 20px; }
+.category-tags-list .post-tags a.on{
+    color: #CE5462;
+    border-bottom: 1px solid #CE5462;
+    font-weight: 700;
+}

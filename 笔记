@@ -1,0 +1,194 @@
+mongodb调用顺序
+
+
+mongodb_client
+1、暴露MongoClient模块， new Define()
+2、MongoClient.connect( 参数处理 ) ->
+        connect( 连接client ) ->
+        createServer( 传入参数, ) ->
+        connectHandler( 认证, 检查身份需要发起重新连接 ) ->
+        db.db.js( 实例化db类连接 ) ->
+        connectCallback( err, db ) db是连接成功的对象, 可以操作集合db
+
+
+创建连接数据库套接字, 可以连接子数据库
+db(name, options)
+
+集合类
+1、collection
+        collection.count().then(function( num ) {})
+
+define.classMethod 都是暴露模块
+1、插入
+    prototype: insert( 过时 ), insertOne, insertMany, bulkWrite
+
+    insertOne -> insertOne -> insertDocuments -> prototype.insert -> prototype.insertMany;
+
+    insertMany ->
+        bulkWrite -> ( bulk.raw || writeConcern( 配置 ) || bulk.execute( 传入配置, 执行脚本, 写入更新id等 ) ->
+        Store.prototype.execute ->
+        return hasWriteErrors( 检查写入回调信息 ) ) ->
+        callback( null, r 返回结果, 包含对象信息和写入参数 )
+
+    bulkWrite -> ( 590行 只做简单的数据校验 )
+
+
+// demo
+var co = require( "co" );
+co(function*() {
+
+    var db = yieId MongoClient.connect( "mongodb://localhost:27107/test" );
+    var query1 = db.collection( "collectionName" );
+
+    yieId query1.insertMany( [ { a: 1 } ] );
+    var count = yieId query1.count();
+
+    console.log( count );
+    db.close();
+});
+
+
+
+
+// 586904612aa6351cfcf1e608 当前登录的用户
+
+// 用户对应socket.id
+{
+    586904612aa6351cfcf1e608: X7ht_37wazSb_wLcAAAB,
+    586904612aa6351cfcf1e609: X7ht_37wazSb_wLcAAAC,
+    586904612aa6351cfcf1e600: X7ht_37wazSb_wLcAAAD
+}
+
+// 当前用户和（单个用户 || 群）的聊天记录
+X7ht_37wazSb_wLcAAAB: {
+    X7ht_37wazSb_wLcAAAC: [
+        {
+            time: 1464739200000,
+            content: "这是一个消息"
+        }
+    ],
+    X7ht_37wazSb_wLcAAAD: [
+        {
+            time: 1464739200000,
+            content: "这是另一个消息"
+        }
+    ]
+}
+
+
+
+app: {
+
+    // 封装一层mvc, 让用户只用关注业务逻辑
+    ashesNode: {
+        controller: {
+
+            // 注册路由执行, 中间件函数( 基础服务功能, 用户可自定义注入中间件 )
+            route: {
+                writeRequestLog,        // 写入日志( must )
+                checkToken,             // 检测token( must )
+                authority,              // 验证权限
+                controllerAction        // 执行路由( must )
+            },
+            model: {}                   // mongodb封装model的orm, mongoose无需
+        },
+        writeLog,                       // 写入日志到文件, 文件名: error20170101, 如果文件不存在, 则创建文件, 文件内容按照时间排序
+        pool: {}                        // 连接池
+    },
+
+    // 所有请求在此处理, 对应请求到: 模块名->接口名+controller
+    controller: {
+
+        // 用户模块
+        user: {
+            login: {
+                controller: {
+                    callModel,          // 调用model的方法
+                },
+                logic,                  // login自身的业务逻辑
+                model                   // 增加一层适配器, 调用service model
+            }
+        }
+    },
+
+    // 公用的一些业务逻辑
+    logic: {
+
+        // token的管理, 生成规则, 过期时间
+        token: {
+            create,                     // 创建一个用户标示的token( 过期时间 )
+            remove,                     // 清除用户的token
+            check                       // 检测token是否可用
+        },
+
+        // 角色访问控制, 验证当前接口的权限码是否在当前用户下
+        rbac: {
+            initialize: {},             // 分发
+            validate: {}                // 具体权限验证规则
+        }
+    },
+
+    // 服务类, 第三方接口
+    service: {
+        model: {},                      // 可以直接和db交互 也 可以调用到ashesNode中的model
+    },
+
+    // 配置文件( 后台可视化配置 )
+    config: {
+
+        // 路由配置
+        route: [
+            {
+                route: "api/login",                 // api
+                method: [ "get", "post" ],          // 请求方法
+                authority: 10000,                   // 接口可访问的权限级别
+                controller: "/user/login",          // 指向的控制器文件
+                action: "loginSend",                // 调用指定的方法
+                extendMiddleware: {
+                    action: "middleInsert",         // 添加自定义中间件函数, 排序级别在倒数第二
+                    controller: "/user/login"       // 指向的控制器文件
+                }
+            }
+        ],
+
+        // 用户级别和接口权限码
+        userRole: [{
+            level: 100,                             // 用户级别[ 0, 100, 200, 300 ]
+            id: "586904612aa63511e608",             // 用户id, 随机生成
+            description: "普通用户",                 // 用户说明
+            authority: [ 10000, 10001, 20000 ]      // 用户可访问的接口权限码
+        }],
+
+        // 错误码
+        code: {
+            // 系统代码报错的错误码
+            errorCode: {
+                -99999: "连接池为空",
+                -99998: "连接不可用",
+                -80000: "解析http body内容报错"
+            },
+
+            // http默认的公用的错误码
+            httpErrorCode: {
+                -1005: "登录超时",
+                -1006: "未登录"
+            }
+        }
+    },
+
+    // 日志模块( 打印代码错误日志 | error, http报文日志请求参数响应参数 | http )
+    log: {
+
+        // 可能打印的日志字段: type, time, description, msg, code, url, param, request, response
+        // type: {
+        //     1: 代码错误,
+        //     2: http打印报文
+        // }
+        // 根据天数生成日志 { type: 1, time: 2017.02.10 14:44:44, description: 解析http body报错,  msg: try出报错信息, code: -80000  }
+    },
+
+    // 一般的公用方法
+    helper: {
+        common
+    }
+}

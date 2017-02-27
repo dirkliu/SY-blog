@@ -1,0 +1,95 @@
+<%- include header %>
+
+<h2 class="h2_title">添加文章 »</h2>
+<div class="content_c">
+
+    <table width="100%" class="new_table">
+        <tr>
+            <td class="name">名称</td>
+            <td class="text">
+                <input type="text" id="cateNameId" name="cateName">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">选择类别</td>
+            <td class="text" >
+                <select id="parentId" name="parent">
+                    <option value="0">顶级分类</option>
+                    <option value="1">精选笑话</option>
+                    <option value="98">&nbsp;&nbsp;┗ 幽默笑话</option>
+                    <option value="99">&nbsp;&nbsp;┗ 冷笑话</option>
+                    <option value="2">搞笑图片</option>
+                    <option value="86">&nbsp;&nbsp;┗ 内涵图</option>
+                    <option value="94">&nbsp;&nbsp;┗ 脑残对话</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">发布者</td>
+            <td class="text" >
+                <input type="text" name="desc" id="descId">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">来源</td>
+            <td class="text" >
+                <input type="text" name="desc" id="descId">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">喜欢数</td>
+            <td class="text" >
+                <input type="text" name="desc" id="descId">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">阅读次数</td>
+            <td class="text" >
+                <input type="text" name="desc" id="descId">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">评论选项</td>
+            <td class="text" >
+                <select id="parentId" name="parent">
+                    <option value="0">开启</option>
+                    <option value="1">关闭</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">阅读权限</td>
+            <td class="text" >
+                <select id="parentId" name="parent">
+                    <option value="0">开放</option>
+                    <option value="1">禁止</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">关键词</td>
+            <td class="text" >
+                <input type="text" name="desc" id="descId">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">描述</td>
+            <td class="text" >
+                <input type="text" name="desc" id="descId">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">详细内容</td>
+            <td class="text">
+                <textarea type="text" name="desc" id="descId" rows="5"></textarea>
+            </td>
+        </tr>
+    </table>
+
+    <div class="btn">
+        <span id="addCateBtn" class="ok" >发布文章 »</span>
+    </div>
+
+</div>
+
+<%- include footer %>

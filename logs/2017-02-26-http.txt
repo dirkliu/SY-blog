@@ -1,0 +1,2 @@
+{"type":"request","desc":"http请求报文","time":"2017-02-26 21:16:33:676","method":"POST","url":"http://127.0.0.1/reg","ip":"127.0.0.1","params":{},"body":{"userName":"1","passWord":"1","email":"1"},"query":{},"cookie":{"token":"358bceaf6b00727455a4138458500eb9"}}
+=============华丽的分隔符===============
