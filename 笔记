@@ -1,3 +1,194 @@
+博客架构流程
+
+1、登陆过程: 登录 -> 入库前验证字段类型 -> 入库查找 -> 创建签名 -> 生成token -> 返回给前端
+
+2、访问接口: /api/category/query/ -> 验证token是否有效 -> 验证访问者权限 -> ok
+
+app: {
+
+    // 封装一层mvc, 让用户只用关注业务逻辑
+    ashesNode: {
+    
+        // 控制器
+        controller: {
+
+            // 注册路由执行, 中间件函数( 基础服务功能, 用户可自定义注入中间件 )
+            route: {
+                writeRequestLog,        // 写入日志( must )
+                checkToken,             // 检测token( must )
+                authority,              // 验证权限
+                controllerAction        // 执行路由( must )
+            },
+            model: {}                   // mongodb封装model的orm, mongoose无需
+        },
+        helper: {
+            tools                       // 公用的方法
+        },
+        
+        // 日志
+        logs: {
+            generate,                   // 根据类型生成日志方法
+            writeLog,                   // 写入日志到文件, 文件名: error20170101, 如果文件不存在, 则创建文件, 文件内容按照时间排序
+        },
+        
+        // 连接池
+        pool: {
+            connectMongo,               // 连接数据库的方法
+            pool,                       // 对连接池本身的操作, 默认创建, 取连接, 放入, 销毁等
+            queue                       // 管理连接池队列
+        },
+        init                            // 入口
+    },
+
+    // 所有请求在此处理, 对应请求到: 模块名->接口名+controller
+    controller: {
+
+        // 后台模块
+        admin: {
+            login: {
+                login,                  // 控制器
+                logic,                  // login自身的业务逻辑
+                model                   // 增加一层适配器, 调用service model
+            }
+        }
+    },
+
+    // 公用的一些业务逻辑
+    logic: {
+
+        // token和签名的管理, 生成规则, 过期时间
+        token: {
+            initialize,                   // 创建一个token || 检测token是否有效
+            generateSign,                 // 根据( 客户端, 服务端, 第三方方式 )类型生成一个签名, 签名和token是对应关系
+            storageSignToken              // 存储token, 进行增删改查
+        },
+
+        // 角色访问控制, 验证当前接口的权限码是否在当前用户下
+        rbac: {
+            initialize: {},                // 验证是否有权限访问此接口
+        }
+    },
+
+    // 服务类, 第三方接口
+    service: {
+        admin: {
+            login: {
+                login                      // 和第三方接口交互, 比如：mongodb
+            }
+        }
+    },
+
+    // 配置文件( 后台可视化配置 )
+    config: {
+
+        // 路由配置
+        route: [
+            {
+                route: "api/login",                 // api
+                method: [ "get", "post" ],          // 请求方法
+                authority: 10000,                   // 接口可访问的权限级别
+                controller: "/user/login",          // 指向的控制器文件
+                action: "loginSend",                // 调用指定的方法
+                extendMiddleware: {
+                    action: "middleInsert",         // 添加自定义中间件函数, 排序级别在倒数第二
+                    controller: "/user/login"       // 指向的控制器文件
+                }
+            }
+        ],
+
+        // 用户级别和接口权限码
+        userRole: {
+        
+            // 用户级别( 根据后台配置 )
+            100: {
+                description: "普通用户",                 // 用户级别说明
+                authority: [ 10000, 10001, 20000 ]      // 用户可访问的接口权限码( 分配详细的权限码 )
+            },
+            200: {
+                description: "会员级别",
+                authority: [ 20000, 20001, 20000 ]
+            }
+        },
+
+        // 错误码
+        errorCode: {
+        
+            // 系统代码报错的错误码
+            error: {
+                -99999: "连接池为空",
+                -99998: "连接不可用",
+                -80000: "解析http body内容报错"
+            },
+
+            // http默认的公用的错误码
+            http: {
+                -1005: "登录超时",
+                -1006: "未登录"
+            }
+        },
+        
+        // 数据库基础信息
+        setting
+    },
+
+    // 日志存放模块
+    logs: {
+
+        // 可能打印的日志字段: type, time, description, msg, code, url, param, request, response
+        // type: {
+        //     1: 代码错误,
+        //     2: http打印报文
+        // }
+        // 根据天数生成日志 { type: 1, time: 2017.02.10 14:44:44, description: 解析http body报错,  msg: try出报错信息, code: -80000  }
+    },
+    
+    // 试图
+    view: {
+        admin: {},
+        common: {}
+    },
+    
+    // 应用的入口文件
+    app,
+    
+    // 应用中用到的一些全局方法
+    global
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 mongodb调用顺序
 
 
@@ -50,145 +241,7 @@ co(function*() {
 
 
 
-// 586904612aa6351cfcf1e608 当前登录的用户
-
-// 用户对应socket.id
-{
-    586904612aa6351cfcf1e608: X7ht_37wazSb_wLcAAAB,
-    586904612aa6351cfcf1e609: X7ht_37wazSb_wLcAAAC,
-    586904612aa6351cfcf1e600: X7ht_37wazSb_wLcAAAD
-}
-
-// 当前用户和（单个用户 || 群）的聊天记录
-X7ht_37wazSb_wLcAAAB: {
-    X7ht_37wazSb_wLcAAAC: [
-        {
-            time: 1464739200000,
-            content: "这是一个消息"
-        }
-    ],
-    X7ht_37wazSb_wLcAAAD: [
-        {
-            time: 1464739200000,
-            content: "这是另一个消息"
-        }
-    ]
-}
 
 
 
-app: {
 
-    // 封装一层mvc, 让用户只用关注业务逻辑
-    ashesNode: {
-        controller: {
-
-            // 注册路由执行, 中间件函数( 基础服务功能, 用户可自定义注入中间件 )
-            route: {
-                writeRequestLog,        // 写入日志( must )
-                checkToken,             // 检测token( must )
-                authority,              // 验证权限
-                controllerAction        // 执行路由( must )
-            },
-            model: {}                   // mongodb封装model的orm, mongoose无需
-        },
-        writeLog,                       // 写入日志到文件, 文件名: error20170101, 如果文件不存在, 则创建文件, 文件内容按照时间排序
-        pool: {}                        // 连接池
-    },
-
-    // 所有请求在此处理, 对应请求到: 模块名->接口名+controller
-    controller: {
-
-        // 用户模块
-        user: {
-            login: {
-                controller: {
-                    callModel,          // 调用model的方法
-                },
-                logic,                  // login自身的业务逻辑
-                model                   // 增加一层适配器, 调用service model
-            }
-        }
-    },
-
-    // 公用的一些业务逻辑
-    logic: {
-
-        // token的管理, 生成规则, 过期时间
-        token: {
-            create,                     // 创建一个用户标示的token( 过期时间 )
-            remove,                     // 清除用户的token
-            check                       // 检测token是否可用
-        },
-
-        // 角色访问控制, 验证当前接口的权限码是否在当前用户下
-        rbac: {
-            initialize: {},             // 分发
-            validate: {}                // 具体权限验证规则
-        }
-    },
-
-    // 服务类, 第三方接口
-    service: {
-        model: {},                      // 可以直接和db交互 也 可以调用到ashesNode中的model
-    },
-
-    // 配置文件( 后台可视化配置 )
-    config: {
-
-        // 路由配置
-        route: [
-            {
-                route: "api/login",                 // api
-                method: [ "get", "post" ],          // 请求方法
-                authority: 10000,                   // 接口可访问的权限级别
-                controller: "/user/login",          // 指向的控制器文件
-                action: "loginSend",                // 调用指定的方法
-                extendMiddleware: {
-                    action: "middleInsert",         // 添加自定义中间件函数, 排序级别在倒数第二
-                    controller: "/user/login"       // 指向的控制器文件
-                }
-            }
-        ],
-
-        // 用户级别和接口权限码
-        userRole: [{
-            level: 100,                             // 用户级别[ 0, 100, 200, 300 ]
-            id: "586904612aa63511e608",             // 用户id, 随机生成
-            description: "普通用户",                 // 用户说明
-            authority: [ 10000, 10001, 20000 ]      // 用户可访问的接口权限码
-        }],
-
-        // 错误码
-        code: {
-            // 系统代码报错的错误码
-            errorCode: {
-                -99999: "连接池为空",
-                -99998: "连接不可用",
-                -80000: "解析http body内容报错"
-            },
-
-            // http默认的公用的错误码
-            httpErrorCode: {
-                -1005: "登录超时",
-                -1006: "未登录"
-            }
-        }
-    },
-
-    // 日志模块( 打印代码错误日志 | error, http报文日志请求参数响应参数 | http )
-    log: {
-
-        // 可能打印的日志字段: type, time, description, msg, code, url, param, request, response
-        // type: {
-        //     1: 代码错误,
-        //     2: http打印报文
-        // }
-        // 根据天数生成日志 { type: 1, time: 2017.02.10 14:44:44, description: 解析http body报错,  msg: try出报错信息, code: -80000  }
-    },
-
-    // 一般的公用方法
-    helper: {
-        common
-    }
-}
