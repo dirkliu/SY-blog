@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+</head>
+<body>
+<script>
+    var res = {
+        json: function( o ) {
+            console.log( o );
+        }
+    };
+
+    var returnFactory = function( code, value ) {
+
+        var arg = Array.prototype.slice.call( arguments ),
+            _toString = Object.prototype.toString,
+            returnJson = { code: 0, msg: '', data: '', time: (+ new Date()) };
+
+        if ( !arg.length ) return returnJson;
+
+        // 只有一个参数永远是成功
+        if ( arg.length === 1 ) {
+            if ( _toString.call( code ) === '[object Object]' ) {
+                for ( var i in code ) {
+                    returnJson[i] = code[i];
+                }
+            } else {
+                returnJson.data = code;
+            }
+        }
+
+        if ( arg.length === 2 ) {
+            returnJson.code = code;
+            if ( code ) {
+                returnJson.msg = value;
+            } else {
+                returnJson.data = value;
+            }
+        }
+
+        return returnJson;
+    };
+
+    res.json( returnFactory( 'YUHKJWAD1545756456578' ) );
+    res.json( returnFactory( 0, true ) );
+    res.json( returnFactory( -1, '领取时间过期' ) );
+    res.json( returnFactory( { code: 0, data: { token: '1234' }, total: 200, page: 1, pageSize: 10 } ) );
+</script>
+</body>
+</html>
