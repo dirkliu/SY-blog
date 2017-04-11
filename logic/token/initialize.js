@@ -1,6 +1,5 @@
 
-var httpResponse = require( '../httpResponse' ),                    // res模块
-    storageSignToken = require( './storageSignToken' ),             // sign, token存储
+var storageSignToken = require( './storageSignToken' ),             // sign, token存储
     jwt = require( "jsonwebtoken" ),
     oToken = {};
 
@@ -37,7 +36,7 @@ oToken.check = function( req, res, next ) {
     var signToken = req.body.token || req.query.token || req.cookies.token || req.headers[ "x-access-token" ],
         token = storageSignToken.query( signToken );
 
-    if ( !token || !signToken ) return httpResponse.error.call( res, -1006 );
+    if ( !token || !signToken ) return res.json( returnFactory( -1008, "token无效" ) );
 
     // 验证token, 传输私钥
     jwt.verify( token, oToken.secretOrPrivateKey, function( err, decode ) {
@@ -46,12 +45,14 @@ oToken.check = function( req, res, next ) {
 
             // 如果token过期或者无效, 则去删除缓存中的引用
             storageSignToken.delete( signToken );
-            return httpResponse.error.call( res, -1005 );
+            return res.json( returnFactory( -1005, "登录超时" ) );
         }
 
         // 验证token是否伪造
         isPass = oToken.validate[ decode.type ]( req, decode );
-        if ( !isPass ) return httpResponse.error.call( res, -1006 );
+        if ( !isPass ) {
+            return res.json( returnFactory( -1006, "未登录" ) );
+        }
 
         req.user = decode;
         next();
@@ -72,6 +73,25 @@ oToken.create = function( options, cbHandle ) {
     });
 
     cbHandle( token );
+};
+
+/**
+ * @method decodeJWT
+ * @description 根据签名解出token内容
+ *
+ * @param {String} sign 签名后的token
+ * @param {Function} cbHandle 回调
+ * @return {*} payload信息
+ */
+oToken.decodeJWT = function( sign, cbHandle ) {
+    var result = null,
+        token = storageSignToken.query( sign );
+
+    if ( !token ) return result;
+    jwt.verify( token, oToken.secretOrPrivateKey, function( err, decode ) {
+        if ( err ) return result;
+        cbHandle( decode );
+    });
 };
 
 module.exports = oToken;

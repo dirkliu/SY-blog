@@ -76,10 +76,14 @@ category.save = function( options, callback ) {
                             _id: objectId( idd )
                         }, { $set: options }, { upsert: true });
 
-                        if ( update.result.ok !== 1 ) return callback( -1, null );
-                        return callback( null, {} );
+                        if ( update.result.ok !== 1 ) {
+                            callback( -1, null );
+                        } else {
+                            callback( null, {} );
+                        }
+                    } else {
+                        callback( -1, null );
                     }
-                    return callback( -1, null );
                 }
 
                 var r = yield collection.insertOne( options );

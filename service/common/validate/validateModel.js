@@ -89,14 +89,14 @@ fieldValidate.commonValidate = function( fieldName, fieldAttr, options ) {
     }
 
     // 判断类型
-    if ( toString.call( oName ) !== '[object '+ fieldAttr.type +']' ) {
+    if ( oName && toString.call( oName ) !== '[object '+ fieldAttr.type +']' ) {
         return {
             msg: remark + ':字段类型必须为[' + fieldAttr.type + ']'
         }
     }
 
     // 判断长度
-    if ( fieldAttr.type === 'String' && oName.length > fieldAttr.maxLen ) {
+    if ( oName && fieldAttr.type === 'String' && oName.length > fieldAttr.maxLen ) {
         return {
             msg: remark + ':字段长度不能大于[' + fieldAttr.maxLen + ']'
         }

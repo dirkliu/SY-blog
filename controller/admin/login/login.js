@@ -19,12 +19,17 @@ controller[ 'submit' ] = function( req, res ) {
 
         // 如果失败
         if ( err ) {
-            return res.json( returnFactory( err ) );
+            return res.json( returnFactory( -1, err ) );
         }
 
         // 密码不正确
         if ( data.password !== tools.md5( passWord ) ) {
             return res.json( returnFactory( -1, '密码不正确' ) );
+        }
+
+        // 是否被冻结
+        if ( data.isFreeze ) {
+            return res.json( returnFactory( -2, '当前用户处于冻结状态' ) );
         }
 
         // 生成sign

@@ -1,0 +1,10 @@
+<%- include ../header %>
+
+<div class="blogStats">记录共-<%= data.total || 0 %>-条</div>
+
+<div id="listRender"></div>
+
+<div class="notArticleTip <%= data.list.length ? 'hide' : '' %>">暂无历史记录</div>
+
+<script src="/admin/js/recommend.js"></script>
+<%- include ../footer %>

@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta charset="UTF-8">
-    <title>后台管理<%= title %></title>
+    <title>后台管理-<%= title %></title>
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="email=no">
@@ -20,35 +20,50 @@
     <meta name="browsermode" content="application">
     <meta name="x5-page-mode" content="app">
     <meta name="msapplication-tap-highlight" content="no">
+
     <link rel="stylesheet" href="/admin/css/admin.css" />
+    <link rel="stylesheet" href="/admin/css/animation.css" />
     <script src="/js/zepto-min.js"></script>
     <script src="/js/common.js"></script>
+    <!--<script src="http://192.168.253.1:8080/target/target-script-min.js#anonymous"></script>-->
 </head>
 <body>
 
-<!-- on-->
+<div id="warp">
 <div class="nav">
     <div class="mask"></div>
     <div class="menu-list">
-        <div class="title" style="margin-top: 0; border-top:0">» 系统管理</div>
+
+        <div class="title">» 系统管理</div>
         <ul>
-            <li><a href="/admin/comment">评论管理</a></li>
+            <li><a href="/admin/system/website">网站设置</a></li>
         </ul>
 
-        <div class="title">» 分类管理</div>
+        <div class="title">» 基本管理</div>
         <ul>
-            <li><a href="/admin/addType" class="on">添加类别</a></li>
+            <li><a href="/admin/recommend">推荐文章</a></li>
+            <li><a href="/admin/history">浏览记录</a></li>
+            <li><a href="/admin/tag">tag标签</a></li>
+            <li><a href="/admin/link">友情链接</a></li>
+            <li><a href="/admin/comment">评论管理</a></li>
         </ul>
 
         <div class="title">» 文章管理</div>
         <ul>
-            <li><a href="/admin/addArticle">添加文章</a></li>
-            <li><a href="/admin/article">文章列表</a></li>
+            <li><a href="/admin/category/query">文章栏目</a></li>
+            <li><a href="/admin/article/add">添加文章</a></li>
+            <li><a href="/admin/article/query">文章列表</a></li>
+        </ul>
+
+        <div class="title">» 权限管理</div>
+        <ul>
+            <li><a href="/admin/authority/api">接口管理</a></li>
         </ul>
 
         <div class="title">» 用户管理</div>
         <ul>
-            <li><a href="/admin/addUser">管理用户</a></li>
+            <li><a href="/reg">添加用户</a></li>
+            <li><a href="/admin/user/query">用户列表</a></li>
         </ul>
     </div>
 </div>
@@ -67,4 +82,3 @@
     </div>
 </div>
 <div class="container">
-    <div class="main">

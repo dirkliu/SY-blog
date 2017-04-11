@@ -60,8 +60,8 @@ tools.day = {
         var o = this.generate();
         return o.day + ' ' + o.hours + ':' + o.seconds;
     },
-    time: function() {
-        var o = this.generate();
+    time: function( timeStamp ) {
+        var o = this.generate( timeStamp );
         return o.day + ' ' + o.hours;
     }
 };
@@ -100,6 +100,37 @@ tools.mathId = function( num ) {
 // 加载文件
 tools.require = function( route ) {
     return require( path.join( process.cwd(), route ) );
+};
+
+// 过滤空参数{ null, undefined, '' }
+tools.filterEmpty = function( options ) {
+    var i;
+
+    options = options || null;
+    if ( !tools.isObject( options ) ) return {};
+
+    for ( i in options ) {
+        if ( options[i] === '' || options[i] === null || options[i] === undefined ) {
+            delete options[i];
+        }
+    }
+    return options;
+};
+
+// 判断是否为空 仅限于{ Array, Object, String }类型
+tools.isEmptyValue = function( params ) {
+    params = params || {};
+    return Object.keys( params ).length;
+};
+
+// 获取ip
+tools.ip = function( req ) {
+    var clientIp = req.headers[ 'x-forwarded-for' ] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+
+    return clientIp.slice( 7 );
 };
 
 global.tools = tools;

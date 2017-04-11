@@ -1,3 +1,13 @@
 <%- include header %>
-<h1 style="text-align: center; line-height: 200px;"><%= message %></h1>
+<style type="text/css">
+    .errorText{
+        word-wrap:break-word;
+        word-break:break-all;
+        padding: 20px 20px 0 20px;
+        text-align: center;
+        line-height: 30px;
+        font-size: 14px;
+    }
+</style>
+<div class="errorText"><%= message %></div>
 <%- include footer %>

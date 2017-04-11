@@ -1,0 +1,57 @@
+<%- include ../header %>
+
+<style type="text/css">
+    .textInput{
+        width: 80%;
+        padding: 10px 0;
+        background: #f6f6f6;
+    }
+    .auth {
+        background: #f6f6f6;
+        margin-top: 10px;
+        border: 1px solid #f6f6f6;
+        box-sizing: border-box;
+        border-radius: 3px;
+    }
+    .article-list .title{
+        font-weight: 700;
+        padding: 10px 0 10px 10px;
+    }
+
+    .btn .ok{ margin: 0}
+
+    .desc{ margin-bottom: 0!important;}
+    .desc div{
+        padding-left: 10px;
+    }
+</style>
+
+<div class="blogStats">接口共-<%= data.length %>-个</div>
+
+<div id="authorityApi">
+<%
+    data.forEach(function( item ) {
+        if ( item.route in routeFilter ) return;
+%>
+    <div class="article-list">
+        <div class="title"><%= item.routeName %></div>
+        <div class="desc">
+            <div class="route">路由 <%= item.route %></div>
+            <div class="auth">
+                权限码 <input type="text" class="textInput authority" value="<%= item.authority %>">
+            </div>
+        </div>
+        <div class="btn">
+            <span class="ok delete on" id="<%= item.route %>">删除 »</span>
+            <span class="ok fixed" id="<%= item.route %>">冻结 »</span>
+            <span class="ok update" id="<%= item.route %>" data-code="<%= item.authority %>">修改 »</span>
+        </div>
+    </div>
+<% }) %>
+</div>
+
+<script src="/admin/js/authorityApi.js"></script>
+<script language="javascript" >
+    AuthorityApi.setModel( '<%- JSON.stringify( data ) %>' );
+</script>
+<%- include ../footer %>

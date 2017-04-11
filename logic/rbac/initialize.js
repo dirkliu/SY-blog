@@ -1,6 +1,5 @@
 
-var httpResponse = require( '../httpResponse' ),
-    writeLog = require( '../../AshesNode/logs/generate' );
+var writeLog = require( '../../AshesNode/logs/generate' );
 
 /**
  * @method initialize
@@ -12,6 +11,7 @@ module.exports = function( authority ) {
     return function( req, res, next ) {
 
         var isPass = false, role;
+
         try {
             // 从token中获取用户信息
             role = req.user.role;
@@ -35,7 +35,8 @@ module.exports = function( authority ) {
         if ( isPass ) {
             return next();
         } else {
-            return httpResponse.error.call( res, -1007 );
+            //return httpResponse.error.call( res, -1007 );
+            return res.json( returnFactory( -1007, "权限不够" ) );
         }
     };
 };

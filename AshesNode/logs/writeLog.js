@@ -10,8 +10,9 @@ oWrite.config = {
     2: 'error'
 };
 
+// 普通转成string, 过滤undefined, function, NaN
 oWrite.format = function( data ) {
-    return JSON.stringify( data ) + '\n=============华丽的分隔符===============\n';
+    return JSON.stringify( data ) + ',\n';
 };
 
 /**
@@ -57,14 +58,22 @@ oWrite.init = function( o, source ) {
     var date = tools.day.date();
     var filePath = path.resolve( __dirname, '../../' ) + '/logs/' + date + '-' + type + '.txt';
 
-    // 检测文件是否存在
-    fs.exists( filePath, function( exists ) {
-        if ( !exists ) {
-            that.insert( filePath, o, exists );
-        } else {
-            that.insert( filePath, o );
+    fs.writeFile( filePath, that.format( o ), {
+        flag: 'a'
+    }, function( err ) {
+        if ( err ) {
+            return oWrite.init( err, 2 );
         }
     });
+
+    // 检测文件是否存在
+    // fs.exists( filePath, function( exists ) {
+    //     if ( !exists ) {
+    //         that.insert( filePath, o, exists );
+    //     } else {
+    //         that.insert( filePath, o );
+    //     }
+    // });
 };
 
 returnModule.init = oWrite.init.bind( oWrite );

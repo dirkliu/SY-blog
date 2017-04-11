@@ -12,10 +12,7 @@ collections.category = {
     cateName: {
         type: "String",
         required: true,
-        maxLen: 20,
-        validate: {
-            rules: /^[a-zA-Z][a-zA-Z0-9]*$/
-        }
+        maxLen: 20
     },
     parentId: {
         type: "String",

@@ -1,0 +1,18 @@
+.bottomUp{
+    animation: bottomUp1;
+    animation-duration: .4s;
+    -webkit-animation:bottomUp1 .4s;
+}
+@-webkit-keyframes bottomUp1 {
+    0% {
+        opacity: 0;
+        bottom: -225px;
+    }
+    50%{
+        opacity: 1;
+    }
+    100% {
+        bottom: 0;
+        opacity: 1;
+    }
+}

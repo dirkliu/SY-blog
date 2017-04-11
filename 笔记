@@ -8,7 +8,7 @@ app: {
 
     // 封装一层mvc, 让用户只用关注业务逻辑
     ashesNode: {
-    
+
         // 控制器
         controller: {
 
@@ -24,13 +24,13 @@ app: {
         helper: {
             tools                       // 公用的方法
         },
-        
+
         // 日志
         logs: {
             generate,                   // 根据类型生成日志方法
             writeLog,                   // 写入日志到文件, 文件名: error20170101, 如果文件不存在, 则创建文件, 文件内容按照时间排序
         },
-        
+
         // 连接池
         pool: {
             connectMongo,               // 连接数据库的方法
@@ -98,7 +98,7 @@ app: {
 
         // 用户级别和接口权限码
         userRole: {
-        
+
             // 用户级别( 根据后台配置 )
             100: {
                 description: "普通用户",                 // 用户级别说明
@@ -112,7 +112,7 @@ app: {
 
         // 错误码
         errorCode: {
-        
+
             // 系统代码报错的错误码
             error: {
                 -99999: "连接池为空",
@@ -126,7 +126,7 @@ app: {
                 -1006: "未登录"
             }
         },
-        
+
         // 数据库基础信息
         setting
     },
@@ -141,41 +141,19 @@ app: {
         // }
         // 根据天数生成日志 { type: 1, time: 2017.02.10 14:44:44, description: 解析http body报错,  msg: try出报错信息, code: -80000  }
     },
-    
+
     // 试图
     view: {
         admin: {},
         common: {}
     },
-    
+
     // 应用的入口文件
     app,
-    
+
     // 应用中用到的一些全局方法
     global
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -237,9 +215,6 @@ co(function*() {
     console.log( count );
     db.close();
 });
-
-
-
 
 
 

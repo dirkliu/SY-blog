@@ -33,7 +33,7 @@ regService.register = function( options, cbHandle ) {
 
     // 验证字段类型
     var validate = fieldValidate.category( options, regDBModel );
-    if ( validate.code < 0 ) return cbHandle( validate, null );
+    if ( validate.code < 0 ) return cbHandle( validate.msg, null );
 
     pool.accquire(function( err, client ) {
 
@@ -50,7 +50,7 @@ regService.register = function( options, cbHandle ) {
                 cbHandle( null, doc.ops[0] );
 
             } catch ( err ) {
-                cbHandle({ code: -1, msg: err }, null );
+                cbHandle( err, null );
             }
 
             pool.release( client );

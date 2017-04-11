@@ -6,43 +6,26 @@
 // 用户注册
 var collectionReg = {
     name: {
-        remark: '用户名',
-        type: 'String',
-        required: true,
-        maxLen: 20,
+        remark: '用户名', type: 'String', required: true, maxLen: 20,
         validate: [
-            { rules: /^[A-Za-z0-9]{4}/, text: '至少4个字符' },
             { rules: function( value ) {
-                if ( value.substr( 0, 2 ) === 'sy' ) return true;
-                return false;
-            }, text: '前两个字符必须为sy' },
-            { rules: /^[a-zA-Z][a-zA-Z0-9]*$/, text: '只能英文开头, 且不能有空格' }
+                if ( value.length < 4 ) return false;
+                return true;
+            }, text: '至少4个字符' }
         ]
     },
-    password: {
-        remark: '密码',
-        type: 'String',
-        required: true,
-        maxLen: 32
-    },
+    password: { remark: '密码', type: 'String', required: true, maxLen: 32 },
     email: {
-        remark: '电子邮件',
-        type: 'String',
-        maxLen: 20,
+        remark: '电子邮件', type: 'String', maxLen: 20,
         validate: {
             rules: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
         }
     },
-    level: {
-        remark: '用户级别',
-        type: 'Number',
-        required: true
-    },
-    role: {
-        remark: '用户权限',
-        type: 'Array',
-        required: true
-    }
+    ip: { remark: 'ip', type: 'String', maxLen: 20 },
+    createTime: { remark: '注册时间', type: 'String', maxLen: 23 },
+    level: { remark: '用户级别', type: 'Number', required: true },
+    role: { remark: '用户权限', type: 'Array', required: true },
+    isFreeze: { remark: '是否冻结用户', type: 'Boolean', default: false }
 };
 
 module.exports = collectionReg;

@@ -1,42 +1,81 @@
 <%- include header %>
 
 <div class="blogStats">
-    文章共-2-篇&nbsp;|&nbsp;每页-10-条
+    文章共-<%= data.total %>-篇&nbsp;|&nbsp;每页-<%= data.pageSize %>-条
 </div>
 
-<!-- for-->
-<div class="article-list">
-    <div class="title">讲个故事</div>
+<div id="listRender">
+<% data.list.forEach(function( item ) { %>
+    <div class="article-list">
+        <div class="title"><%= item.title %></div>
 
-    <div class="desc">
-        <span>发表于 <time>2016-10-22</time> &nbsp;|&nbsp;</span>
-        <span>分类于 <a href="javascript:void(0);"><span>文集</span></a> &nbsp;|&nbsp;</span>
-        <span><a href="javascript:void(0);"><span>1条评论</span></a> &nbsp;|&nbsp;</span>
-        <span class="is-disabled"><a href="javascript:void(0);"><span>评论已关</span></a> &nbsp;|&nbsp;</span>
-        <span class="is-disabled"><a href="javascript:void(0);"><span>禁止阅读</span></a> &nbsp;|&nbsp;</span>
-        <span>阅读次数 2044</span>
-    </div>
+        <div class="desc">
+            <span>发表于 <time><%= item.createTime.slice( 0, 19 ) %></time> &nbsp;|&nbsp;</span>
+            <span><a href="javascript:void(0);"><span>1条评论</span></a> &nbsp;|&nbsp;</span>
 
-    <div class="btn">
-        <span id="addCateBtn" class="ok on" >删除 »</span>
-        <span id="addCateBtn" class="ok" >修改 »</span>
+            <span>分类于
+                <a href="/admin/article/query?categoryId=<%= item.categoryId %>">
+                    <span><%= item.category.cateName %></span>
+                </a> &nbsp;|&nbsp;
+            </span>
+
+            <% if ( item.isComment ) { %>
+                <span class="is-disabled openComment" id="<%= item._id %>">
+                    <a href="javascript:void(0);">
+                        <span>评论已关</span>
+                    </a> &nbsp;|&nbsp;
+                </span>
+            <% } %>
+
+            <% if ( item.isRead ) { %>
+                <span class="is-disabled openRead" id="<%= item._id %>">
+                    <a href="javascript:void(0);">
+                        <span>禁止阅读</span>
+                    </a> &nbsp;|&nbsp;
+                </span>
+            <% } %>
+
+            <span>阅读次数 <%= item.read %></span>
+        </div>
+
+        <div class="btn">
+            <span class="ok delete on" id="<%= item._id %>">删除 »</span>
+            <span class="ok update" id="<%= item._id %>">修改 »</span>
+        </div>
     </div>
+<% }) %>
 </div>
 
-<div class="article-list">
-    <div class="title">基于node, mongodb应用开发</div>
+<% if ( data.total > data.pageSize ) { %>
+    <div class="icon-page">分页</div>
 
-    <div class="desc">
-        <span>发表于 <time>2016-10-22</time> &nbsp;|&nbsp;</span>
-        <span>分类于 <a href="javascript:void(0);"><span>文集</span></a> &nbsp;|&nbsp;</span>
-        <span><a href="javascript:void(0);"><span>1条评论</span></a> &nbsp;|&nbsp;</span>
-        <span>阅读次数 2044</span>
+    <div class="mask hide"></div>
+    <div id="page" class="page-warp hide bottomUp">
+        <h2>分页</h2>
+        <div class="page">
+            <div>
+            <%
+                var total = data.total,
+                    pageSize = data.pageSize,
+                    page = data.page,
+                    url = "", classText = "",
+                    len = Math.round( total / pageSize ) + 1;
+
+            for ( var i = 1; i < len; i++ ) {
+                url = "/admin/article/query?page=" + i;
+                classText = "";
+                if ( i === page ) {
+                    classText = "on";
+                    url = "#";
+                }
+            %>
+            <a class="pageBtn <%= classText %>" href="javascript:void(0);" data-key="<%= i %>"><%= i %></a>
+            <% } %>
+            </div>
+        </div>
     </div>
+<% } %>
+<div class="notArticleTip <%= data.list.length ? 'hide' : '' %>">暂无文章信息</div>
 
-    <div class="btn">
-        <span id="addCateBtn" class="ok on" >删除 »</span>
-        <span id="addCateBtn" class="ok" >修改 »</span>
-    </div>
-</div>
-
+<script src="/admin/js/article.js"></script>
 <%- include footer %>

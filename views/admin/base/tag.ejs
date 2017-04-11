@@ -1,0 +1,42 @@
+<%- include ../header %>
+<style type="text/css">
+    .blogStats{
+        border-bottom: 1px solid #d2d2d2;
+        padding-top: 20px;
+        text-align: left;
+        font-weight: 700;
+    }
+    .addType{ margin-top: 0 }
+    .notArticleTip{ border-top: none;}
+</style>
+
+<h2 class="h2_title">添加标签 »</h2>
+<table width="100%" class="new_table">
+    <tr>
+        <td class="name">标签名称</td>
+        <td class="text">
+            <input type="text" id="tagName" name="tagName">
+        </td>
+    </tr>
+</table>
+<div class="btn"><span class="ok">添加 »</span></div>
+
+<% if ( data.total ) { %>
+    <div class="blogStats">共-<%= data.total %>-个标签</div>
+    <div class="addType">
+        <ul>
+            <% data.list.forEach(function( item ) { %>
+            <li>
+                <div class="cateTitle"><%= item.tagName %></div>
+                <span id="<%= item._id %>" data-text="<%= item.tagName %>" class="update">修改</span>
+                <span id="<%= item._id %>" class="del">删除</span>
+            </li>
+            <% }) %>
+        </ul>
+    </div>
+<% } else { %>
+    <div class="notArticleTip">暂无标签记录</div>
+<% } %>
+
+<script src="/admin/js/tag.js"></script>
+<%- include ../footer %>

@@ -8,28 +8,30 @@ var writeLog = require( './writeLog' ),
  */
 generate.request = function( req, res, next ) {
     var o = {};
-    o.type = 'request';
-    o.desc = 'http请求报文';
-    o.time = tools.day.timeSeconds();
-    o.method = req.method;
-    o.url = req.protocol + '://' + req.hostname + req.path;
-    o.ip = req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip.replace(/::ffff:/, '');
-    o.params = req.params;
-    o.body = req.body;
-    o.query = req.query;
-    o.cookie = req.cookies;
+    o.type      = 'request';
+    o.desc      = '请求报文';
+    o.time      = tools.day.timeSeconds();
+    o.method    = req.method;
+    o.url       = req.protocol + '://' + req.hostname + req.path;
+    o.ip        = req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip.replace(/::ffff:/, '');
+    o.params    = req.params;
+    o.body      = req.body;
+    o.query     = req.query;
+    o.cookie    = req.cookies;
 
     writeLog.init( o, 1 );
     next();
 };
 
-generate.response = function( req, res, next ) {
+generate.response = function( req, res ) {
     var o = {};
-    o.type = 'response';
-    o.desc = 'http响应报文';
-    o.time = tools.day.timeSeconds();
-    o.method = req.method;
-    o.url = req.protocol + '://' + req.hostname + req.path;
+    o.type      = 'response';
+    o.desc      = '响应报文';
+    o.time      = tools.day.timeSeconds();
+    o.method    = req.method;
+    o.url       = req.protocol + '://' + req.hostname + req.path;
+    o.cookies   = req.cookies;
+    o.resBody   = res;
 
     writeLog.init( o, 1 );
 };

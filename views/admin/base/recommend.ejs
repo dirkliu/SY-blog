@@ -1,0 +1,30 @@
+<%- include ../header %>
+
+<div class="blogStats">推荐文章共-<%= data.total %>-篇</div>
+
+<div id="listRender">
+<% data.list.forEach(function( item ) { %>
+    <div class="article-list">
+        <div class="title"><%= item.title %></div>
+
+        <div class="desc">
+            <span>发表于 <time><%= item.createTime.slice( 0, 10 ) %></time> &nbsp;|&nbsp;</span>
+
+            <span class="is-disabled">推荐至
+                <a href="/admin/recommend?recommendLevel=<%= item.recommendLevel %>">
+                    <span><%= level[item.recommendLevel] %></span>
+                </a>
+            </span>
+        </div>
+
+        <div class="btn">
+            <span class="ok cancel" id="<%= item._id %>">取消推荐 »</span>
+        </div>
+    </div>
+<% }) %>
+</div>
+
+<div class="notArticleTip <%= data.list.length ? 'hide' : '' %>">暂无推荐信息</div>
+
+<script src="/admin/js/recommend.js"></script>
+<%- include ../footer %>

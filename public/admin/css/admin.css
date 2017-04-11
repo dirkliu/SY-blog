@@ -1,6 +1,6 @@
 *{ margin:0; padding:0; font-size:12px; color:#333; font-family:"Microsoft YaHei","Helvetica Neue", "Segoe UI", "Hiragino Sans GB",  Verdana, sans-serif;}
 
-h1{ font-size: 26px;  color: #000;}
+h1{ font-size: 28px;  color: #000;}
 ul,li{list-style:none;}
 table{ border-collapse:collapse;}
 img{ border:none;}
@@ -38,13 +38,15 @@ a:hover{ text-decoration:none;}
 a,button,input{
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-html,body{
-    letter-spacing: 1px; height:100%; background: #fff;
+body{
+    height:100%;
+    letter-spacing: 1px; background: #fff;
     -webkit-overflow-scrolling: touch;
     overflow-scrolling: touch;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
 }
+
 input, button, textarea, select, optgroup, option {
     font-family: inherit;
     font-size: inherit;
@@ -60,6 +62,7 @@ input::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
 }
+.hide{ display: none!important; }
 
 /*
  * 动画
@@ -100,6 +103,7 @@ input::-webkit-calendar-picker-indicator {
     -o-transition-timing-function: ease-out 1s;
 }
 
+.modal-open{ position: fixed; }
 
 /***************************************弹出框样式*/
 .SYUI-popBox-In{
@@ -172,7 +176,7 @@ input::-webkit-calendar-picker-indicator {
 
 /***************************************公用*/
 .mask {
-    position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+    position: fixed; top: 0; right: 0; bottom: 0; left: 0;
     z-index: 8; background-color: transparent;
 }
 .btn{ text-align: center; margin-top: 20px; }
@@ -181,11 +185,17 @@ input::-webkit-calendar-picker-indicator {
     padding: 0 20px;
     background: #fff;
     color: #333;
+    margin: 0 5px;
     cursor: pointer;
     display: inline-block;
     border: 1px solid #d2d2d2;
     font-size: 14px;
     line-height: 36px;
+}
+.btn .fixed{
+    background: #36af9a;
+    color: #fff;
+    border: 1px solid #36af9a;
 }
 .btn .ok.on, .btn .ok:active{ background: #CE5462; color: #fff; border: 1px solid #CE5462; }
 
@@ -218,7 +228,7 @@ input::-webkit-calendar-picker-indicator {
     background-size: 45px 45px;
 }
 .header .title{padding: 30px 20px 0 0;  text-align: right;}
-.header .title .subtitle{  line-height: 30px; color: #000;}
+.header .title .subtitle{  line-height: 24px; color: #000;}
 .header .session-name{ text-align: right; line-height: 30px; padding-right: 20px; padding-bottom: 20px;}
 .header .session-name span,
 .header .session-name a{ color: #fff;  padding: 10px 0 0 0;}
@@ -228,9 +238,9 @@ input::-webkit-calendar-picker-indicator {
 /***************************************导航*/
 .nav {
     opacity: 0;
-    transform: translate3d(-100%, 0, 0);  -webkit-transform: translateX(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);  -webkit-transform: translateX(-100%);
     transition: .3s;  -webkit-transition: .3s; position: fixed; left: 0; top: 0;
-    bottom: 0; background-color: transparent; width: 100%; z-index: 8;
+    bottom: 0; background-color: transparent; width: 100%; z-index: 10;
 }
 .nav .menu-list {
     position: fixed; left: 0; top: 0; bottom: 0;
@@ -242,17 +252,17 @@ input::-webkit-calendar-picker-indicator {
 }
 .nav .menu-list .title{
     color: #fff;
-    padding: 15px 0 0 0;
+    padding: 15px 0 0 15px;
     line-height:20px;
-    margin: 10px 0 0 15px;
     border-top: 1px solid #4a4a4a;
     font-size: 14px;
 }
 .nav .menu-list ul {}
 .nav .menu-list ul li{}
 .nav .menu-list ul li a{
-    margin: 0 15px; display: block; line-height: 44px; color: #999;
+    padding: 0 15px; display: block; line-height: 44px; color: #999;
 }
+.nav .menu-list ul li a:active{ background: #2a2a2a;}
 .nav .menu-list ul li a.on{ color: #CE5462; }
 
 
@@ -264,8 +274,8 @@ input::-webkit-calendar-picker-indicator {
 
 
 /***************************************主体*/
-.container{ padding-bottom: 20px; }
-.main{ background:#fff; min-width:320px;}
+.container{ padding-bottom: 20px; background:#fff;}
+
 .h2_title{ padding:9px 7px 10px 10px; font-size:16px; }
 
 
@@ -311,4 +321,76 @@ input::-webkit-calendar-picker-indicator {
     border: 1px solid #bbb!important;
     color: #333!important;
 }
+.notArticleTip{ text-align: center;line-height: 100px;font-size: 16px; padding-top: 40px;border-top: 1px solid #d2d2d2;}
 
+
+/*分页*/
+.icon-page{
+    height: 50px; text-align: center; font-size: 14px; line-height: 50px; background: #f6f6f6;
+}
+.page-warp{
+    z-index: 10;
+    position: fixed; width: 100%; bottom: 0;
+    border-top: 3px solid #CE5462; background: #fff;
+}
+.page-warp h2{ background: #f6f6f6;  line-height: 44px; font-size: 14px; text-align: center;}
+.page-warp .page{ max-height: 225px; overflow-y: scroll; -webkit-overflow-scrolling : touch;}
+.page-warp .page .pageBtn{
+    background: #fff;
+    display: block; text-align: center;
+    line-height: 44px;
+    border-bottom: 1px solid #d2d2d2; color: #333; font-size: 14px;
+}
+.page-warp .page .pageBtn:active{ background: #f6f6f6;}
+.page-warp .page .pageBtn.on{ font-weight: 700; color: #CE5462;}
+
+/**/
+.add-authority{
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+    -webkit-transform: translateY(100%);
+    transition: .3s;
+    -webkit-transition: .3s;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: transparent;
+    width: 100%;
+    z-index: 10;
+}
+.add-authority .auth-list{
+    background-color: #fff;
+    z-index: 9;
+    height: 60%;
+    overflow: auto;
+    position: fixed;
+    width: 100%;
+    bottom: 44px;
+    -webkit-overflow-scrolling : touch;
+}
+.add-authority .auth-list ul{ padding: 20px; box-sizing: border-box;}
+.add-authority .auth-list ul li{
+    display: inline-block;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    width: 23%;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 3px;
+    border: 1px solid #d2d2d2;
+    box-sizing: border-box;
+}
+.add-authority .auth-list ul li.on{ border: 1px solid #CE5462}
+
+.add-authority .mask{ background-color: rgba(0,0,0,0.5);}
+.add-authority.on {
+    opacity: 1; transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0);
+    transition: .3s; -webkit-transition: .3s;
+}
+.authority-btn{
+    position: fixed; bottom:0; width: 100%; z-index: 11;
+    height: 44px; line-height: 44px; color: #fff; font-size: 16px;
+    text-align: center; background: #CE5462;
+}
+.division{ height: 1px; overflow: hidden; background: #d2d2d2; margin: 20px 0;}

@@ -86,7 +86,7 @@ module.exports = function( options, appExpress ) {
         controllerPath = path.resolve( __dirname, '../../controller' );
 
         // 如果权限码存在, 则concat
-        if ( authority ) {
+        if ( authority && process.env.NODE_ENV === "product" ) {
             handleQueue = handleQueue.concat( token.check, rbac( authority ) );
         }
 

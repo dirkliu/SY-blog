@@ -1,95 +1,143 @@
 <%- include header %>
 
-<h2 class="h2_title">添加文章 »</h2>
-<div class="content_c">
+<style type="text/css">
+    .tag{}
+    .tag span{
+        box-sizing: border-box; border: 1px solid #d2d2d2;
+        display: inline-block; padding: 9px 15px; margin-bottom: 5px;
+        border-radius: 3px;
+    }
+    .tag span.on{ border: 1px solid #CE5462; }
+</style>
 
-    <table width="100%" class="new_table">
-        <tr>
-            <td class="name">名称</td>
-            <td class="text">
-                <input type="text" id="cateNameId" name="cateName">
-            </td>
-        </tr>
-        <tr>
-            <td class="name">选择类别</td>
-            <td class="text" >
-                <select id="parentId" name="parent">
-                    <option value="0">顶级分类</option>
-                    <option value="1">精选笑话</option>
-                    <option value="98">&nbsp;&nbsp;┗ 幽默笑话</option>
-                    <option value="99">&nbsp;&nbsp;┗ 冷笑话</option>
-                    <option value="2">搞笑图片</option>
-                    <option value="86">&nbsp;&nbsp;┗ 内涵图</option>
-                    <option value="94">&nbsp;&nbsp;┗ 脑残对话</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td class="name">发布者</td>
-            <td class="text" >
-                <input type="text" name="desc" id="descId">
-            </td>
-        </tr>
-        <tr>
-            <td class="name">来源</td>
-            <td class="text" >
-                <input type="text" name="desc" id="descId">
-            </td>
-        </tr>
-        <tr>
-            <td class="name">喜欢数</td>
-            <td class="text" >
-                <input type="text" name="desc" id="descId">
-            </td>
-        </tr>
-        <tr>
-            <td class="name">阅读次数</td>
-            <td class="text" >
-                <input type="text" name="desc" id="descId">
-            </td>
-        </tr>
-        <tr>
-            <td class="name">评论选项</td>
-            <td class="text" >
-                <select id="parentId" name="parent">
-                    <option value="0">开启</option>
-                    <option value="1">关闭</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td class="name">阅读权限</td>
-            <td class="text" >
-                <select id="parentId" name="parent">
-                    <option value="0">开放</option>
-                    <option value="1">禁止</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td class="name">关键词</td>
-            <td class="text" >
-                <input type="text" name="desc" id="descId">
-            </td>
-        </tr>
-        <tr>
-            <td class="name">描述</td>
-            <td class="text" >
-                <input type="text" name="desc" id="descId">
-            </td>
-        </tr>
-        <tr>
-            <td class="name">详细内容</td>
-            <td class="text">
-                <textarea type="text" name="desc" id="descId" rows="5"></textarea>
-            </td>
-        </tr>
-    </table>
+<div id="articleId">
+    <h2 class="h2_title"><%= title.slice( 1 ) %> »</h2>
+    <div class="content_c">
 
-    <div class="btn">
-        <span id="addCateBtn" class="ok" >发布文章 »</span>
+        <table width="100%" class="new_table">
+            <tr>
+                <td class="name">标题</td>
+                <td class="text">
+                    <input type="text" class="textInput" id="titleId" name="title" value="<%= data.title %>">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">分类</td>
+                <td class="text" >
+                    <select id="categoryId" class="textSelect" name="categoryId">
+                        <option value="0">请选择</option>
+                        <% category.forEach(function( item ) { %>
+                            <option value="<%= item._id %>">
+                                <%= item.cateName %>
+                                <% item.son.forEach(function( sonItem ) { %>
+                                    <option value="<%= sonItem._id %>" <%= data.categoryId == sonItem._id ? 'selected=selected' : '' %>">
+                                        &nbsp;&nbsp;┗ <%= sonItem.cateName %>
+                                    </option>
+                                <% }) %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="name">作者</td>
+                <td class="text" >
+                    <input type="text" class="textInput" name="author" id="authorId" value="<%= data.author %>">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">来源</td>
+                <td class="text" >
+                    <input type="text" class="textInput" name="source" id="sourceId" value="<%= data.source %>">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">喜欢数</td>
+                <td class="text" >
+                    <input type="text" class="textInput" name="like" id="likeId" value="<%= data.like %>">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">阅读次数</td>
+                <td class="text" >
+                    <input type="text" class="textInput" name="read" id="readId" value="<%= data.read %>">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">添加标签</td>
+                <td class="text" >
+                    <div id="tagId" class="tag">
+                        <%
+                            var uTag = data.tag && data.tag.toString() || "";
+                            tag.forEach(function( item ) {
+                                var className = uTag.indexOf( item._id ) > -1 ? 'tagBtn on' : 'tagBtn';
+                        %>
+                            <span class="<%= className %>" id="<%= item._id %>"><%= item.tagName %></span>
+                        <% }) %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="name">推荐位置</td>
+                <td class="text" >
+                    <select id="recommendLevel" class="textSelect" name="recommendLevel">
+                        <option value="0">请选择</option>
+                        <option value="1" <%= data.recommendLevel == 1 ? 'selected=selected' : '' %>>首页</option>
+                        <option value="2" <%= data.recommendLevel == 2 ? 'selected=selected' : '' %>>栏目页</option>
+                        <option value="3" <%= data.recommendLevel == 3 ? 'selected=selected' : '' %>>列表页</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="name">评论选项</td>
+                <td class="text" >
+                    <select id="isCommentId" class="textSelect" name="isComment">
+                        <option value="0" <%= data.isComment == 0 ? 'selected=selected' : '' %>>开启</option>
+                        <option value="1" <%= data.isComment == 1 ? 'selected=selected' : '' %>>关闭</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="name">阅读权限</td>
+                <td class="text" >
+                    <select id="isReadId" class="textSelect" name="isRead">
+                        <option value="0" <%= data.isRead == 0 ? 'selected=selected' : '' %>>开放</option>
+                        <option value="1" <%= data.isRead == 1 ? 'selected=selected' : '' %>>禁止</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="name">关键词</td>
+                <td class="text" >
+                    <input type="text" class="textInput" name="keyWord" id="keyWordId" value="<%= data.keyWord %>">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">描述</td>
+                <td class="text" >
+                    <input type="text" class="textInput" name="desc" id="descId" value="<%= data.desc %>">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">详细内容</td>
+                <td class="text">
+                    <textarea type="text" class="textInput" name="content" id="contentId" rows="5"><%= data.content %></textarea>
+                </td>
+            </tr>
+        </table>
+
+        <div class="btn">
+            <span id="submitBtn" class="ok" data-source="<%= source %>" >
+                <%= source === "add" ? "发布" : "修改" %>文章 »
+            </span>
+        </div>
+
     </div>
-
 </div>
+
+<script src="/admin/js/addArticle.js"></script>
+<script language="javascript" >
+    Article.setModel( '<%- JSON.stringify( data ) %>' );
+</script>
 
 <%- include footer %>

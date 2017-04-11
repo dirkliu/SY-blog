@@ -49,7 +49,12 @@ var loginView = (function() {
                 }
 
                 oLogin.post();
-            });
+            })
+
+            // 注册
+            .on( "tap", ".regBtn", function() {
+                common.goto( "/reg" );
+            })
     };
 
     return function() {
